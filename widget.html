@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>CTI Widget</title>
+  <script src="https://org65c7f68e.crm16.dynamics.com/webresources/Widget/msdyn_ciLibrary.js"
+    data-crmurl="https://org65c7f68e.crm16.dynamics.com" data-cifid="CIFMainLibrary">
+    </script>
+  <!-- <script src="https://org65c7f68e.crm16.dynamics.com/webresources/CRMClients/msdyn_channelintegrationframework.js"
+        data-crmurl="https://org65c7f68e.crm16.dynamics.com"
+        data-cifid="CIFMainLibrary">
+  </script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+  <style>
+    body {
+      font-family: Segoe UI, sans-serif;
+      padding: 16px;
+      font-size: 13px;
+      color: #333;
+    }
+
+    #status {
+      color: #888;
+      margin-bottom: 8px;
+    }
+
+    #lastCall {
+      font-weight: bold;
+      color: #0078d4;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="status">Warte auf CIF...</div>
+  <div id="lastCall"></div>
+
+  <script>
+    console.log("Script geladen, registriere CIFInitDone...");
+
+    window.addEventListener("message", function (event) {
+      console.log("postMessage empfangen:", event.origin, JSON.stringify(event.data));
+    });
+
+    window.addEventListener("CIFInitDone", function () {
+      console.log("CIFInitDone gefeuert!");
+      console.log("CIFramework:", Microsoft.CIFramework);
+      //init();
+    });
+
+    // Fallback: nach 5 Sekunden prüfen ob CIF überhaupt da ist
+    setTimeout(async function () {
+      console.log("Microsoft vorhanden?", typeof Microsoft);
+      console.log("CIFramework vorhanden?", typeof Microsoft?.CIFramework);
+      console.log("CIFramework", Microsoft.CIFramework);
+      await init();
+    }, 5000);
+
+    function waitForCIF(callback) {
+      if (window.Microsoft
+        && window.Microsoft.CIFramework) {
+        console.log("cif found")
+        callback();
+      } else {
+        setTimeout(function () { waitForCIF(callback); }, 100);
+      }
+    }
+
+    async function init() {
+      console.log("init");
+      await Microsoft.CIFramework.setMode(1);
+      console.log("Modus gesetzt");
+      await Microsoft.CIFramework.openForm({
+        entityName: "contact",
+        formParameters: { telephone1: 1234 }
+      });
+      console.log("open Form done");
+    }
+
+    //window.addEventListener("load", function() {
+    //  console.log("load fired");
+    //  waitForCIF(init);
+    //});
+
+  </script>
+</body>
+
+</html>
