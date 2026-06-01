@@ -47,7 +47,8 @@
       console.log("CIFInitDone gefeuert!");
       console.log("CIFramework:", Microsoft.CIFramework);
       try {
-        await init();
+        await connectSignalR()
+        //await init();
       } catch (e) {
         console.error("Init Fehler:", e);
       }
@@ -69,6 +70,30 @@
       } else {
         setTimeout(function () { waitForCIF(callback); }, 100);
       }
+    }
+
+    async function connectSignalR() {
+      console.log("connectSignalR");
+      const res =
+        await fetch(
+          "https://functiontest-gthxdghne9gugxgn.westeurope-01.azurewebsites.net/api/negotiate",
+          {
+            method: "POST",
+            headers: {
+              "x-user-id": userId
+            }
+          });
+
+      const info =
+        await res.json();
+
+      connection =
+        new signalR.HubConnectionBuilder()
+          .withUrl(info.url, {
+            accessTokenFactory: () =>
+              info.accessToken
+          })
+          .build();
     }
 
     async function init() {
