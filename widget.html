@@ -43,19 +43,23 @@
       console.log("postMessage empfangen:", event.origin, JSON.stringify(event.data));
     });
 
-    window.addEventListener("CIFInitDone", function () {
+    window.addEventListener("CIFInitDone", async function () {
       console.log("CIFInitDone gefeuert!");
       console.log("CIFramework:", Microsoft.CIFramework);
-      //init();
+      try {
+        await init();
+      } catch (e) {
+        console.error("Init Fehler:", e);
+      }
     });
 
     // Fallback: nach 5 Sekunden prüfen ob CIF überhaupt da ist
-    setTimeout(async function () {
+    /*setTimeout(async function () {
       console.log("Microsoft vorhanden?", typeof Microsoft);
       console.log("CIFramework vorhanden?", typeof Microsoft?.CIFramework);
       console.log("CIFramework", Microsoft.CIFramework);
       await init();
-    }, 5000);
+    }, 5000);*/
 
     function waitForCIF(callback) {
       if (window.Microsoft
@@ -73,7 +77,7 @@
       console.log("Modus gesetzt");
       await Microsoft.CIFramework.openForm({
         entityName: "contact",
-        formParameters: { telephone1: 1234 }
+        formParameters: { telephone1: "1234" }
       });
       console.log("open Form done");
     }
