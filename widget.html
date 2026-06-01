@@ -46,21 +46,16 @@
     window.addEventListener("CIFInitDone", async function () {
       console.log("CIFInitDone gefeuert!");
       console.log("CIFramework:", Microsoft.CIFramework);
-      try {
-        await connectSignalR()
-        //await init();
-      } catch (e) {
-        console.error("Init Fehler:", e);
-      }
     });
 
     // Fallback: nach 5 Sekunden prüfen ob CIF überhaupt da ist
-    /*setTimeout(async function () {
+    setTimeout(async function () {
       console.log("Microsoft vorhanden?", typeof Microsoft);
       console.log("CIFramework vorhanden?", typeof Microsoft?.CIFramework);
       console.log("CIFramework", Microsoft.CIFramework);
-      await init();
-    }, 5000);*/
+      //await init();
+      await connectSignalR();
+    }, 50000);
 
     function waitForCIF(callback) {
       if (window.Microsoft
