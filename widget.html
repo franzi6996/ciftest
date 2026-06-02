@@ -7,10 +7,6 @@
   <script src="https://org65c7f68e.crm16.dynamics.com/webresources/Widget/msdyn_ciLibrary.js"
     data-crmurl="https://org65c7f68e.crm16.dynamics.com" data-cifid="CIFMainLibrary">
     </script>
-  <!-- <script src="https://org65c7f68e.crm16.dynamics.com/webresources/CRMClients/msdyn_channelintegrationframework.js"
-        data-crmurl="https://org65c7f68e.crm16.dynamics.com"
-        data-cifid="CIFMainLibrary">
-  </script> -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
   <style>
     body {
@@ -48,14 +44,16 @@
       console.log("CIFramework:", Microsoft.CIFramework);
     });
 
+    await signalRTest();
+
     // Fallback: nach 5 Sekunden prüfen ob CIF überhaupt da ist
     setTimeout(async function () {
       console.log("Microsoft vorhanden?", typeof Microsoft);
       console.log("CIFramework vorhanden?", typeof Microsoft?.CIFramework);
       console.log("CIFramework", Microsoft.CIFramework);
       //await init();
-      await connectSignalR();
-    }, 50000);
+      await signalRTest();
+    }, 5000);
 
     function waitForCIF(callback) {
       if (window.Microsoft
@@ -64,6 +62,49 @@
         callback();
       } else {
         setTimeout(function () { waitForCIF(callback); }, 100);
+      }
+    }
+
+    async function signalRTest() {
+      try {
+
+        connection =
+          new signalR.HubConnectionBuilder()
+
+            .withUrl(
+              "https://signalrtest321.service.signalr.net/client/?hub=cti",
+              {
+                accessTokenFactory: () =>
+                  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0LXVzZXIiLCJuYmYiOjE3ODAzODE3MzksImV4cCI6MTc4MDM4NTMzOSwiaWF0IjoxNzgwMzgxNzM5LCJhdWQiOiJodHRwczovL3NpZ25hbHJ0ZXN0MzIxLnNlcnZpY2Uuc2lnbmFsci5uZXQvY2xpZW50L2h1YnMvY3RpIn0.EmshZqCk6R0c0Uv7rjsRuUmAx5QJZZcUw__YUTqAxkY"
+              })
+
+            .withAutomaticReconnect()
+
+            .configureLogging(
+              signalR.LogLevel.Information
+            )
+
+            .build();
+
+        connection.on(
+          "incomingCall",
+          (payload) => {
+
+            console.log(
+              "SignalR Event angekommen:",
+              payload
+            );
+          });
+
+        await connection.start();
+
+        console.log(
+          "SignalR connected"
+        );
+
+      } catch (err) {
+
+        console.error(err);
       }
     }
 
