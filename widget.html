@@ -48,7 +48,7 @@
     setTimeout(async function () {
       console.log("Test SignalR");
       //await init();
-      await signalRTest();
+      await connectSignalR();
     }, 5000);
 
     function waitForCIF(callback) {
@@ -58,49 +58,6 @@
         callback();
       } else {
         setTimeout(function () { waitForCIF(callback); }, 100);
-      }
-    }
-
-    async function signalRTest() {
-      try {
-
-        connection =
-          new signalR.HubConnectionBuilder()
-
-            .withUrl(
-              "https://signalrtest321.service.signalr.net/client/?hub=cti",
-              {
-                accessTokenFactory: () =>
-                  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ii0xODk0OTgyNDE0In0.eyJuYmYiOjE3ODAzODM0NDQsImV4cCI6MTc4MDM4NzA0NCwiaWF0IjoxNzgwMzgzNDQ0LCJpc3MiOiJhenVyZS1zaWduYWxyIiwiYXVkIjoiaHR0cHM6Ly9zaWduYWxydGVzdDMyMS5zZXJ2aWNlLnNpZ25hbHIubmV0L2NsaWVudC8_aHViPWN0aSJ9.PWaqaZu8kETp-eKip07x_6aG0Xck4JymTgpemoSA8TM"
-              })
-
-            .withAutomaticReconnect()
-
-            .configureLogging(
-              signalR.LogLevel.Information
-            )
-
-            .build();
-
-        connection.on(
-          "incomingCall",
-          (payload) => {
-
-            console.log(
-              "SignalR Event angekommen:",
-              payload
-            );
-          });
-
-        await connection.start();
-
-        console.log(
-          "SignalR connected"
-        );
-
-      } catch (err) {
-
-        console.error(err);
       }
     }
 
