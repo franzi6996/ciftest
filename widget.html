@@ -63,27 +63,36 @@
 
     async function connectSignalR() {
       console.log("connectSignalR");
-      const res =
-        await fetch(
-          "https://functiontest-gthxdghne9gugxgn.westeurope-01.azurewebsites.net/api/negotiate",
-          {
-            method: "POST",
-            headers: {
-              "x-user-id": userId
-            }
-          });
+      try {
+        const connection =
+          new signalR.HubConnectionBuilder()
+            .withUrl("https://transferphonenumber-cefghmabh4fdbpac.canadacentral-01.azurewebsites.net/api/Negotiate")
+            .configureLogging(signalR.LogLevel.Information)
+            .build();
 
-      const info =
-        await res.json();
+        console.log("SignalR connected");
 
-      connection =
-        new signalR.HubConnectionBuilder()
-          .withUrl(info.url, {
-            accessTokenFactory: () =>
-              info.accessToken
-          })
-          .build();
+        connection.onclose(start);
+        start(connection);
+      } catch (err) {
+
+        console.error(err);
+      }
     }
+
+    async function start(connection) {
+      await connection.start();
+      connection.on(
+        "cti",
+        (payload) => {
+
+          console.log(
+            "SignalR Event angekommen:",
+            payload
+          );
+        });
+    }
+
 
     async function init() {
       console.log("init");
