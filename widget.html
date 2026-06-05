@@ -51,7 +51,7 @@
       await connectSignalR();
     }, 5000);
 
-    function waitForCIF(callback) {
+    /*function waitForCIF(callback) {
       if (window.Microsoft
         && window.Microsoft.CIFramework) {
         console.log("cif found")
@@ -59,7 +59,7 @@
       } else {
         setTimeout(function () { waitForCIF(callback); }, 100);
       }
-    }
+    }*/
 
     async function connectSignalR() {
       console.log("connectSignalR");
@@ -72,15 +72,15 @@
 
         console.log("SignalR connected");
 
-        connection.onclose(start);
-        start(connection);
+        //connection.onclose(start);
+        //start(connection);
       } catch (err) {
 
         console.error(err);
       }
     }
 
-    async function start(connection) {
+    /*async function start(connection) {
       await connection.start();
       connection.on(
         "cti",
@@ -103,7 +103,7 @@
         formParameters: { telephone1: "1234" }
       });
       console.log("open Form done");
-    }
+    }*/
 
     //window.addEventListener("load", function() {
     //  console.log("load fired");
