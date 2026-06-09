@@ -83,7 +83,7 @@
     async function start(connection) {
       await connection.start();
       connection.on(
-        "cti",
+        "phoneCall",
         (payload) => {
 
           console.log(
