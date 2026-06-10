@@ -73,7 +73,7 @@
         console.log("SignalR connected");
 
         connection.onclose(start);
-        start(connection);
+        await start(connection);
       } catch (err) {
 
         console.error(err);
