@@ -63,28 +63,24 @@
 
     async function connectSignalR() {
       console.log("connectSignalR");
-      try {
-        const connection =
-          new signalR.HubConnectionBuilder()
-            .withUrl("https://transferphonenumber-cefghmabh4fdbpac.germanywestcentral-01.azurewebsites.net/api")
-            .withAutomaticReconnect()
-            .configureLogging(signalR.LogLevel.Information)
-            .build();
 
-        connection.on(
-          "newmessage",
-          (payload) => {
+      const connection =
+        new signalR.HubConnectionBuilder()
+          .withUrl("https://transferphonenumber-cefghmabh4fdbpac.germanywestcentral-01.azurewebsites.net/api")
+          .withAutomaticReconnect()
+          .configureLogging(signalR.LogLevel.Information)
+          .build();
 
-            console.log(
-              "SignalR Event angekommen:",
-              payload
-            );
-          });
-        connection.start();
-      } catch (err) {
+      connection.on(
+        "newmessage",
+        (payload) => {
 
-        console.error(err);
-      }
+          console.log(
+            "SignalR Event angekommen:",
+            payload
+          );
+        });
+      await connection.start();
     }
 
     async function start(connection) {
