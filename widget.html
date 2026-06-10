@@ -7,7 +7,7 @@
   <script src="https://org65c7f68e.crm16.dynamics.com/webresources/Widget/msdyn_ciLibrary.js"
     data-crmurl="https://org65c7f68e.crm16.dynamics.com" data-cifid="CIFMainLibrary">
     </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/9.0.6/signalr.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
   <style>
     body {
       font-family: Segoe UI, sans-serif;
@@ -70,16 +70,10 @@
             .configureLogging(signalR.LogLevel.Information)
             .build();
 
-        connection.on(
-          "newmessage",
-          (payload) => {
+        console.log("SignalR connected");
 
-            console.log(
-              "SignalR Event angekommen:",
-              payload
-            );
-          });
-        connection.start()
+        connection.onclose(start);
+        start(connection);
       } catch (err) {
 
         console.error(err);
