@@ -67,7 +67,7 @@
         const connection =
           new signalR.HubConnectionBuilder()
             .withUrl("https://transferphonenumber-cefghmabh4fdbpac.canadacentral-01.azurewebsites.net/api/Negotiate")
-            .WithAutomaticReconnect()
+            .withAutomaticReconnect()
             .configureLogging(signalR.LogLevel.Information)
             .build();
 
