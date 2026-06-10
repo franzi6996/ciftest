@@ -70,10 +70,17 @@
             .configureLogging(signalR.LogLevel.Information)
             .build();
 
-        console.log("SignalR connected");
-
         connection.onclose(start);
-        await start(connection);
+        await connection.start();
+        connection.on(
+          "phoneCall",
+          (payload) => {
+
+            console.log(
+              "SignalR Event angekommen:",
+              payload
+            );
+          });
       } catch (err) {
 
         console.error(err);
