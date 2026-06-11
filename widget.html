@@ -75,8 +75,8 @@
 
       const connection =
         new signalR.HubConnectionBuilder()
-          .withUrl(negotiateResponse.url, {
-            accessTokenFactory: () => negotiateResponse.accessToken
+          .withUrl(negotiateResponse.Url, {
+            accessTokenFactory: () => negotiateResponse.AccessToken
           })
           .withAutomaticReconnect()
           .configureLogging(signalR.LogLevel.Information)
