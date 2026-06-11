@@ -69,7 +69,7 @@
         { method: "POST" }
       );
 
-      const negotiateResponse = await res.json()
+      const negotiateResponse = await req.json()
 
       const connection =
         new signalR.HubConnectionBuilder()
