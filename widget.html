@@ -64,9 +64,18 @@
     async function connectSignalR() {
       console.log("connectSignalR");
 
+      const req = await fetch(
+        "https://transferphonenumber-cefghmabh4fdbpac.germanywestcentral-01.azurewebsites.net/api/Negotiate",
+        { method: "POST" }
+      );
+
+      const negotiateResponse = await res.json()
+
       const connection =
         new signalR.HubConnectionBuilder()
-          .withUrl("https://transferphonenumber-cefghmabh4fdbpac.germanywestcentral-01.azurewebsites.net/api/Negotiate")
+          .withUrl(negotiateResponse.url, {
+            accessTokenFactory: () => negotiateResponse.accessToken
+          })
           .withAutomaticReconnect()
           .configureLogging(signalR.LogLevel.Information)
           .build();
